@@ -1,17 +1,12 @@
 import os
 import unittest
 from jumper.vlab import Vlab
-from time import sleep
 
 dir = os.path.dirname(os.path.abspath(__file__))
 fw_bin = os.path.join(dir, '..', 'pca10040', 'blank', 'armgcc', '_build', 'nrf52832_xxaa.bin')
 
 
 class TestAppButton(unittest.TestCase):
-    def pins_listener(self, pin_number, pin_level):
-        if pin_number == 17 and pin_level == 0:
-            self.is_led_on = True
-
     def setUp(self):
         self.vlab = Vlab(working_directory=dir)
         self.vlab.load(fw_bin)
@@ -19,6 +14,10 @@ class TestAppButton(unittest.TestCase):
         self.vlab.run_for_ms(500)
         print('Virtual device is running')
         self.is_led_on = False
+
+    def pins_listener(self, pin_number, pin_level):
+        if pin_number == 17 and pin_level == 0:
+            self.is_led_on = True
 
     def tearDown(self):
         self.vlab.stop()
@@ -36,3 +35,7 @@ class TestAppButton(unittest.TestCase):
         self.vlab.BUTTON1.off()
         self.vlab.run_for_ms(500)
         self.assertTrue(self.is_led_on)
+
+
+if __name__ == '__main__':
+    unittest.main()
