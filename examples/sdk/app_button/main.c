@@ -127,8 +127,8 @@ int main(void)
     err_code = bsp_init(BSP_INIT_BUTTONS, bsp_event_callback);
     APP_ERROR_CHECK(err_code);
 
-     err_code = bsp_buttons_enable();
-     APP_ERROR_CHECK(err_code);
+    err_code = bsp_buttons_enable();
+    APP_ERROR_CHECK(err_code);
     while (1)
     {
         __SEV();

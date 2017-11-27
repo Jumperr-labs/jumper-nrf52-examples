@@ -56,6 +56,7 @@
 #include "sensor_unit.h"
 #include "app_uart.h"
 #include "unity.h"
+#include "jumper.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -125,19 +126,8 @@ int main(void)
     RUN_TEST(test_GetHasMeasurment_Should_Stop_Waiting);
     RUN_TEST(test_Measurment_Should_Grow_Incrementally_Should_Fail_Because_Result_Is_Doubled_by_2);
     
-    UnityEnd();
-
-
-    while (true)
-    {
-        // while (!GetHasMeasurement()) {
-        //     __WFE();
-        // }
-
-        // data = GetSensorData(); // do something with the data
-
-        // data++;        
-    }
+    int unity_code = UnityEnd();
+    jumper_sudo_exit_with_exit_code(unity_code);
 }
 
 

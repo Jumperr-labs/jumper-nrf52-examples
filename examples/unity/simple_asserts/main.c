@@ -66,6 +66,7 @@
 #include <stdio.h>
 #include <setjmp.h>
 #include "ProductionCode.h"
+#include "jumper.h"
 
 void uart_error_handle(app_uart_evt_t * p_event)
 {
@@ -102,7 +103,6 @@ void resetTest(void)
  */
 int main(void)
 {
-    int delay = 0;
     uint32_t err_code;
     const app_uart_comm_params_t comm_params =
         {
@@ -132,22 +132,8 @@ int main(void)
     RUN_TEST(test_FunctionWhichReturnsLocalVariable_ShouldReturnTheCurrentCounterValueAgain, 51);
     RUN_TEST(test_FunctionWhichReturnsLocalVariable_ShouldReturnCurrentCounter_ButFailsBecauseThisTestIsActuallyFlawed, 57);
 
-    if (UnityEnd()) {
-        // Quick blink on FAIL
-        delay = 100;
-    } else {
-        // Slow blink on PASS
-        delay = 1000;
-    }
-
-    while (true)
-    {
-        for (int i = 0; i < LEDS_NUMBER; i++)
-        {
-            bsp_board_led_invert(i);
-        }
-        nrf_delay_ms(delay);
-    }
+    int unity_code = UnityEnd();
+    jumper_sudo_exit_with_exit_code(unity_code);
 }
 
 /**

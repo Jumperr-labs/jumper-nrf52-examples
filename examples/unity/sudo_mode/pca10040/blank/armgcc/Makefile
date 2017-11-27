@@ -63,6 +63,7 @@ SRC_FILES += \
   $(SDK_ROOT)/components/toolchain/system_nrf52.c \
   $(UNITY_DIR)/src/unity.c \
   $(PROJ_DIR)/test/TestSensorUnit.c \
+  $(PROJ_DIR)/jumper.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
