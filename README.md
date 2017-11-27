@@ -1,5 +1,5 @@
-# nrf52_unity_examples
-Please head to https://jumper.io for instructions on how to use this repo.
+# Jumper Nrf52 Examples
+Please head to https://vlab.jumper.io for instructions on how to use this repo.
 
 ## License
 
