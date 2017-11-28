@@ -39,6 +39,7 @@ SRC_FILES += \
   $(UNITY_DIR)/src/unity.c \
   $(PROJ_DIR)/ProductionCode.c \
   $(PROJ_DIR)/test/TestProductionCode.c \
+  $(PROJ_DIR)/jumper.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
