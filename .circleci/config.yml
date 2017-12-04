@@ -18,7 +18,7 @@ jobs:
           path: ~/jumper-nrf52-examples
 
       - restore_cache:
-          key: vlab-integration-tests-repo-
+          key: vlab-integration-tests-repo2-
       - run:
           name: Pull From vlab-integration-tests
           command: |
@@ -28,7 +28,7 @@ jobs:
             cd vlab-integration-tests
             git pull
       - save_cache:
-          key: vlab-integration-tests-repo-{{ .BuildNum }}
+          key: vlab-integration-tests-repo2-{{ .BuildNum }}
           paths:
             - ~/vlab-integration-tests
 
