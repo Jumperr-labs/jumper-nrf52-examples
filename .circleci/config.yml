@@ -28,7 +28,7 @@ jobs:
             cd vlab-integration-tests
             git pull
       - save_cache:
-          key: vlab-integration-tests-repo-{{ BuildNum }}
+          key: vlab-integration-tests-repo-{{ .BuildNum }}
           paths:
             - ~/vlab-integration-tests
 
@@ -59,7 +59,7 @@ jobs:
             source venv/bin/activate
             pip install --upgrade jumper
       - save_cache:
-          key: vlab-integration-tests-venv-{{ .BuidNum }}
+          key: vlab-integration-tests-venv-{{ .BuildNum }}
           paths:
             - ~/vlab-integration-tests/venv
 
