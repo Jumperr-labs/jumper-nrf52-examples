@@ -43,7 +43,7 @@ print('Virtual device is running')
 class TestBma280(unittest.TestCase):
     def setUp(self):
         vlab.run_for_ms(100)
-        vlab.BMA280Device.reset_interrupt('reset_interrupt')
+        vlab.BMA280Device.reset_interrupts()
         vlab.run_for_ms(100)
 
     def tearDown(self):
@@ -99,7 +99,7 @@ class TestBma280(unittest.TestCase):
         int_data_3 = vlab.BMA280Device.get_register_value(BMA2x2_STAT_TAP_SLOPE_ADDR)
         int_data_4 = vlab.BMA280Device.get_register_value(BMA2x2_STAT_ORIENT_HIGH_ADDR)
         if int(int_data_1) != 0 and int(int_data_2) != 0 and int(int_data_3) != 0 and int(int_data_4) != 0:
-            vlab.BMA280Device.reset_interrupt('reset_interrupt')
+            vlab.BMA280Device.reset_interrupts()
             vlab.run_for_ms(64)
             int_data_1 = vlab.BMA280Device.get_register_value(BMA2x2_STAT1_ADDR)
             int_data_2 = vlab.BMA280Device.get_register_value(BMA2x2_STAT2_ADDR)
