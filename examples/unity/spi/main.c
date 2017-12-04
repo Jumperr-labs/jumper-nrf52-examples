@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+ * Copyright (c) 2014 - 2017, Nordic Semiconductor ASA
  * 
  * All rights reserved.
  * 
@@ -37,75 +37,98 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-#include "nrf_drv_spi.h"
-#include "app_util_platform.h"
-#include "nrf_gpio.h"
+/** @file
+ *
+ * @defgroup blinky_example_main main.c
+ * @{
+ * @ingroup blinky_example
+ * @brief Blinky Example Application main file.
+ *
+ * This file contains the source code for a sample application to blink LEDs.
+ *
+ */
+
+#include <stdbool.h>
+#include <stdint.h>
 #include "nrf_delay.h"
 #include "boards.h"
+#define NRF_LOG_MODULE_NAME
+#include "app_uart.h"
+#include "bsp.h"
 #include "app_error.h"
-#include <string.h>
-#include "nrf_log.h"
-#include "nrf_log_ctrl.h"
-#include "nrf_log_default_backends.h"
 
+#define MAX_TEST_DATA_BYTES     (15U)                /**< max number of test bytes to be used for tx and rx. */
+#define UART_TX_BUF_SIZE 256                         /**< UART TX buffer size. */
+#define UART_RX_BUF_SIZE 256                         /**< UART RX buffer size. */
 
-#define SPI_INSTANCE  0 /**< SPI instance index. */
-static const nrf_drv_spi_t spi = NRF_DRV_SPI_INSTANCE(SPI_INSTANCE);  /**< SPI instance. */
-static volatile bool spi_xfer_done;  /**< Flag used to indicate that SPI instance completed the transfer. */
+/*=======Automagically Detected Files To Include=====*/
+#include "unity.h"
+#include <stdio.h>
+#include <setjmp.h>
+#include "ProductionCode.h"
+#include "jumper.h"
 
-#define TEST_STRING "Nordic"
-static uint8_t       m_tx_buf[] = TEST_STRING;           /**< TX buffer. */
-static uint8_t       m_rx_buf[sizeof(TEST_STRING) + 1];    /**< RX buffer. */
-static const uint8_t m_length = sizeof(m_tx_buf);        /**< Transfer length. */
+void uart_error_handle(app_uart_evt_t * p_event)
+{
+    if (p_event->evt_type == APP_UART_COMMUNICATION_ERROR)
+    {
+        APP_ERROR_HANDLER(p_event->data.error_communication);
+    }
+    else if (p_event->evt_type == APP_UART_FIFO_ERROR)
+    {
+        APP_ERROR_HANDLER(p_event->data.error_code);
+    }
+}
+
+/*=======External Functions This Runner Calls=====*/
+extern void setUp(void);
+extern void tearDown(void);
+extern void test_1(void);
+extern void test_spi_sanity_echo_slave(void);
+
+/*=======Test Reset Option=====*/
+void resetTest(void);
+void resetTest(void)
+{
+    tearDown();
+    setUp();
+}
 
 /**
- * @brief SPI user event handler.
- * @param event
+ * @brief Function for application main entry.
  */
-void spi_event_handler(nrf_drv_spi_evt_t const * p_event,
-                       void *                    p_context)
-{
-    spi_xfer_done = true;
-    NRF_LOG_INFO("Transfer completed.");
-    if (m_rx_buf[0] != 0)
-    {
-        NRF_LOG_INFO(" Received:");
-        NRF_LOG_HEXDUMP_INFO(m_rx_buf, strlen((const char *)m_rx_buf));
-    }
-}
-
 int main(void)
 {
+    uint32_t err_code;
+    const app_uart_comm_params_t comm_params =
+        {
+            RX_PIN_NUMBER,
+            TX_PIN_NUMBER,
+            RTS_PIN_NUMBER,
+            CTS_PIN_NUMBER,
+            APP_UART_FLOW_CONTROL_ENABLED,
+            false,
+            UART_BAUDRATE_BAUDRATE_Baud115200
+        };
+
+    APP_UART_FIFO_INIT(&comm_params,
+                       UART_RX_BUF_SIZE,
+                       UART_TX_BUF_SIZE,
+                       uart_error_handle,
+                       APP_IRQ_PRIORITY_LOWEST,
+                       err_code);
+
+    APP_ERROR_CHECK(err_code);
     bsp_board_leds_init();
 
-    APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
-    NRF_LOG_DEFAULT_BACKENDS_INIT();
+    UnityBegin("test/TestProductionCode.c");
+    // RUN_TEST(test_1);
+    RUN_TEST(test_spi_sanity_echo_slave);
     
-    NRF_LOG_INFO("SPI example.");
-
-    nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
-    spi_config.ss_pin   = SPI_SS_PIN;
-    spi_config.miso_pin = SPI_MISO_PIN;
-    spi_config.mosi_pin = SPI_MOSI_PIN;
-    spi_config.sck_pin  = SPI_SCK_PIN;
-    APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
-
-    while (1)
-    {
-        // Reset rx buffer and transfer done flag
-        memset(m_rx_buf, 0, m_length);
-        spi_xfer_done = false;
-
-        APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, m_tx_buf, m_length, m_rx_buf, m_length));
-
-        while (!spi_xfer_done)
-        {
-            __WFE();
-        }
-
-        NRF_LOG_FLUSH();
-
-        bsp_board_led_invert(BSP_BOARD_LED_0);
-        nrf_delay_ms(200);
-    }
+    int unity_code = UnityEnd();
+    jumper_sudo_exit_with_exit_code(unity_code);
 }
+
+/**
+ *@}
+ **/
