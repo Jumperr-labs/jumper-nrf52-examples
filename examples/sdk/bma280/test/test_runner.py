@@ -1,7 +1,6 @@
 import os
 import unittest
 from jumper.vlab import Vlab
-# from time import sleep
 
 dir = os.path.dirname(os.path.abspath(__file__))
 fw_bin = os.path.join(dir, '..', 'pca10040', 'blank', 'armgcc', '_build', 'nrf52832_xxaa.bin')
@@ -36,73 +35,76 @@ FIFO_FULL_MASK = 0x20
 FIFO_WATERMARK_MASK = 0x40
 NEW_DATA_MASK = 0x80
 
+vlab = Vlab(working_directory=dir)
+vlab.load(fw_bin)
+vlab.run_for_ms(500)
+print('Virtual device is running')
 
 class TestBma280(unittest.TestCase):
     def setUp(self):
-        self.vlab = Vlab(working_directory=dir, remote_mode=False)
-        self.vlab.load(fw_bin)
-        self.vlab.run_for_ms(500)
-        print('Virtual device is running')
+        vlab.run_for_ms(100)
+        vlab.BMA280Device.reset_interrupt('reset_interrupt')
+        vlab.run_for_ms(100)
 
     def tearDown(self):
-        self.vlab.stop()
+        pass
 
     def check_3_axis_interrupts(self, int_reg, axis_mask, int_name, int_mask, int_axis_reg):
-        self.vlab.BMA280Device.set_interrupt(int_name)
-        self.vlab.run_for_ms(64)
-        int_data = self.vlab.BMA280Device.get_register_value(int_reg)
-        int_axis_data = self.vlab.BMA280Device.get_register_value(int_axis_reg)
+        vlab.BMA280Device.set_interrupt(int_name)
+        vlab.run_for_ms(64)
+        int_data = vlab.BMA280Device.get_register_value(int_reg)
+        int_axis_data = vlab.BMA280Device.get_register_value(int_axis_reg)
         if (int(int_data) & int_mask != 0) and (int(int_axis_data) & axis_mask != 0):
-            self.vlab.BMA280Device.unset_interrupt(int_name)
-            self.vlab.run_for_ms(64)
-            int_data = self.vlab.BMA280Device.get_register_value(int_reg)
-            int_axis_data = self.vlab.BMA280Device.get_register_value(int_axis_reg)
+            vlab.BMA280Device.unset_interrupt(int_name)
+            vlab.run_for_ms(64)
+            int_data = vlab.BMA280Device.get_register_value(int_reg)
+            int_axis_data = vlab.BMA280Device.get_register_value(int_axis_reg)
             if int(int_data) | int(int_axis_data) == 0:
                 return True
         return False
 
     def orient_interrupts(self, int_reg, axis_mask, int_name, int_mask, int_axis_reg):
-        self.vlab.BMA280Device.set_interrupt(int_name)
-        self.vlab.run_for_ms(64)
-        int_data = self.vlab.BMA280Device.get_register_value(int_reg)
-        int_axis_data = self.vlab.BMA280Device.get_register_value(int_axis_reg)
+        vlab.BMA280Device.set_interrupt(int_name)
+        vlab.run_for_ms(64)
+        int_data = vlab.BMA280Device.get_register_value(int_reg)
+        int_axis_data = vlab.BMA280Device.get_register_value(int_axis_reg)
         if (int(int_data) & int_mask != 0) and (int(int_axis_data) & axis_mask != 0):
-            self.vlab.BMA280Device.unset_interrupt('orient')
-            self.vlab.run_for_ms(64)
-            int_data = self.vlab.BMA280Device.get_register_value(int_reg)
-            int_axis_data = self.vlab.BMA280Device.get_register_value(int_axis_reg)
+            vlab.BMA280Device.unset_interrupt('orient')
+            vlab.run_for_ms(64)
+            int_data = vlab.BMA280Device.get_register_value(int_reg)
+            int_axis_data = vlab.BMA280Device.get_register_value(int_axis_reg)
             if int(int_data) | int(int_axis_data) == 0:
                 return True
         return False
 
     def check_interrupts_without_axis(self, int_reg, int_name, int_mask):
-        self.vlab.BMA280Device.set_interrupt(int_name)
-        self.vlab.run_for_ms(64)
-        int_data = self.vlab.BMA280Device.get_register_value(int_reg)
+        vlab.BMA280Device.set_interrupt(int_name)
+        vlab.run_for_ms(64)
+        int_data = vlab.BMA280Device.get_register_value(int_reg)
         if int(int_data) & int_mask != 0:
-            self.vlab.BMA280Device.unset_interrupt(int_name)
-            self.vlab.run_for_ms(64)
-            int_data = self.vlab.BMA280Device.get_register_value(int_reg)
+            vlab.BMA280Device.unset_interrupt(int_name)
+            vlab.run_for_ms(64)
+            int_data = vlab.BMA280Device.get_register_value(int_reg)
             if int(int_data) == 0:
                 return True
         return False
 
     def check_reset_interrupt(self):
-        self.vlab.BMA280Device.set_interrupt('high_g_x')
-        self.vlab.BMA280Device.set_interrupt('single_tap_x')
-        self.vlab.BMA280Device.set_interrupt('new_data')
-        self.vlab.run_for_ms(64)
-        int_data_1 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT1_ADDR)
-        int_data_2 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT2_ADDR)
-        int_data_3 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT_TAP_SLOPE_ADDR)
-        int_data_4 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT_ORIENT_HIGH_ADDR)
+        vlab.BMA280Device.set_interrupt('high_g_x')
+        vlab.BMA280Device.set_interrupt('single_tap_x')
+        vlab.BMA280Device.set_interrupt('new_data')
+        vlab.run_for_ms(64)
+        int_data_1 = vlab.BMA280Device.get_register_value(BMA2x2_STAT1_ADDR)
+        int_data_2 = vlab.BMA280Device.get_register_value(BMA2x2_STAT2_ADDR)
+        int_data_3 = vlab.BMA280Device.get_register_value(BMA2x2_STAT_TAP_SLOPE_ADDR)
+        int_data_4 = vlab.BMA280Device.get_register_value(BMA2x2_STAT_ORIENT_HIGH_ADDR)
         if int(int_data_1) != 0 and int(int_data_2) != 0 and int(int_data_3) != 0 and int(int_data_4) != 0:
-            self.vlab.BMA280Device.reset_interrupt('reset_interrupt')
-            self.vlab.run_for_ms(64)
-            int_data_1 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT1_ADDR)
-            int_data_2 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT2_ADDR)
-            int_data_3 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT_TAP_SLOPE_ADDR)
-            int_data_4 = self.vlab.BMA280Device.get_register_value(BMA2x2_STAT_ORIENT_HIGH_ADDR)
+            vlab.BMA280Device.reset_interrupt('reset_interrupt')
+            vlab.run_for_ms(64)
+            int_data_1 = vlab.BMA280Device.get_register_value(BMA2x2_STAT1_ADDR)
+            int_data_2 = vlab.BMA280Device.get_register_value(BMA2x2_STAT2_ADDR)
+            int_data_3 = vlab.BMA280Device.get_register_value(BMA2x2_STAT_TAP_SLOPE_ADDR)
+            int_data_4 = vlab.BMA280Device.get_register_value(BMA2x2_STAT_ORIENT_HIGH_ADDR)
             if int(int_data_1) == 0 and int(int_data_2) == 0 and int(int_data_3) == 0 and int(int_data_4) == 0:
                 return True
         return False
@@ -170,3 +172,4 @@ class TestBma280(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    vlab.stop()
