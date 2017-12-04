@@ -51,7 +51,7 @@ jobs:
             - vlab-integration-tests-venv-
       - run:
           name: Jumper SDK
-          working_direcctory: ~/vlab-integration-tests
+          working_directory: ~/vlab-integration-tests
           command: |
             if [ ! -d venv ]; then
               virtualenv venv
