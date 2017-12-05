@@ -25,6 +25,7 @@ void test_1(void)
 void test_spi_sanity_echo_slave(void)
 {
     uint8_t rx_buffer [sizeof(ECHO_STRING)];
-    send_over_spi((uint8_t*) ECHO_STRING, sizeof(ECHO_STRING), rx_buffer, sizeof(ECHO_STRING));
+    uint8_t tx_buffer[] = ECHO_STRING;
+    send_over_spi(tx_buffer, sizeof(ECHO_STRING), rx_buffer, sizeof(ECHO_STRING));
     TEST_ASSERT_EQUAL_MEMORY(ECHO_STRING, rx_buffer, sizeof(ECHO_STRING));
 }
