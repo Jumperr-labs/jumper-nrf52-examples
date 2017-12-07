@@ -256,11 +256,11 @@ s32 bma2x2_data_readout_template(void)
 	com_rslt += bma2x2_set_range(BMA2x2_RANGE_2G);
 	com_rslt += bma2x2_get_range(&value);
 
-	com_rslt += bma2x2_set_intr_enable(BMA2x2_SLOPE_X_INTR, enable);
-	com_rslt += bma2x2_get_intr_enable(BMA2x2_SLOPE_X_INTR, &value);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_LOW_G_INTR, enable);
+	com_rslt += bma2x2_get_intr_enable(BMA2x2_LOW_G_INTR, &value);
 
-	com_rslt += bma2x2_set_intr_slope(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
-	com_rslt += bma2x2_get_intr_slope(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, &value);
+	com_rslt += bma2x2_set_intr_low_g(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+	com_rslt += bma2x2_get_intr_low_g(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, &value);
 
 	com_rslt += bma2x2_set_intr_level(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, ACTIVE_HIGH);
 	com_rslt += bma2x2_get_intr_level(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, &value);
@@ -302,10 +302,10 @@ while (1) {
 	/* Read the accel XYZT data*/
 	com_rslt += bma2x2_read_accel_xyzt(&sample_xyzt);
 
-//    NRF_LOG_INFO(" x: %d\r\n", (double)sample_xyzt.x);
-//    NRF_LOG_INFO(" y: %d\r\n", (double)sample_xyzt.y);
-//    NRF_LOG_INFO(" z: %d\r\n", (double)sample_xyzt.z);
-//	NRF_LOG_INFO(" temp: %d\r\n\r\n", (sample_xyzt.temp / 2) + 23);
+    NRF_LOG_INFO(" x: %d\r\n", (double)sample_xyzt.x);
+    NRF_LOG_INFO(" y: %d\r\n", (double)sample_xyzt.y);
+    NRF_LOG_INFO(" z: %d\r\n", (double)sample_xyzt.z);
+	NRF_LOG_INFO(" temp: %d\r\n\r\n", (sample_xyzt.temp / 2) + 23);
 	NRF_LOG_FLUSH();
 	
 	if (com_rslt != 0) {
@@ -646,8 +646,6 @@ void interrupt_pin_callback(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t acti
 
 //	NRF_LOG_INFO("reg09: %d\r\n", int_data_09);
 //	NRF_LOG_FLUSH();
-//	NRF_LOG_INFO("reg09: %d\r\n", int_data_09);
-//	NRF_LOG_FLUSH();
 //	NRF_LOG_INFO("reg0A: %d\r\n", int_data_0A);
 //	NRF_LOG_FLUSH();
 //	NRF_LOG_INFO("reg0B: %d\r\n", int_data_0B);
@@ -779,7 +777,7 @@ void twi_init (void)
 int main(void) {
 	APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 
-//	NRF_LOG_INFO("\r\nBMA280 sensor example\r\n");
+	NRF_LOG_INFO("\r\nBMA280 sensor example\r\n");
 	twi_init();
 	gpio_init();
 	NRF_LOG_FLUSH();
