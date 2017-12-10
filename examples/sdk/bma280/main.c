@@ -189,22 +189,15 @@ extern u8 V_BMA2x2RESOLUTION_u8R;
  */
 s32 bma2x2_data_readout_template(void)
 {
-	/*Local variables for reading accel x, y and z data*/
-	s16	accel_x_s16, accel_y_s16, accel_z_s16 = BMA2x2_INIT_VALUE;
-
-	/* bma2x2acc_data structure used to read accel xyz data*/
-	struct bma2x2_accel_data sample_xyz;
 	/* bma2x2acc_data_temp structure used to read
 		accel xyz and temperature data*/
 	struct bma2x2_accel_data_temp sample_xyzt;
 	/* Local variable used to assign the bandwidth value*/
 	u8 bw_value_u8 = BMA2x2_INIT_VALUE;
-	/* Local variable used to set the bandwidth value*/
-	u8 banwid = BMA2x2_INIT_VALUE;
 	/* status of communication*/
 	s32 com_rslt = ERROR;
 
-	u8 thres = 100, duration = 0, enable = 1, value = 0;
+	u8 thres = 100, duration = 0, enable = 1;
 
 /*********************** START INITIALIZATION ************************
   *	Based on the user need configure I2C or SPI interface.
@@ -251,28 +244,35 @@ s32 bma2x2_data_readout_template(void)
 	bw_value_u8 = 0x08;/* set bandwidth of 7.81Hz*/
 	
 	com_rslt += bma2x2_set_bw(bw_value_u8);
-	com_rslt += bma2x2_get_bw(&banwid);
-
 	com_rslt += bma2x2_set_range(BMA2x2_RANGE_2G);
-	com_rslt += bma2x2_get_range(&value);
-
-	com_rslt += bma2x2_set_intr_enable(BMA2x2_LOW_G_INTR, enable);
-	com_rslt += bma2x2_get_intr_enable(BMA2x2_LOW_G_INTR, &value);
-
-	com_rslt += bma2x2_set_intr_low_g(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
-	com_rslt += bma2x2_get_intr_low_g(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, &value);
-
 	com_rslt += bma2x2_set_intr_level(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, ACTIVE_HIGH);
-	com_rslt += bma2x2_get_intr_level(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, &value);
-
 	com_rslt += bma2x2_set_durn(BMA2x2_SLOPE_THRES, duration);
-	com_rslt += bma2x2_get_durn(BMA2x2_SLOPE_THRES, &value);
-
 	com_rslt += bma2x2_set_thres(BMA2x2_SLOPE_THRES, thres);
-	com_rslt += bma2x2_get_thres(BMA2x2_SLOPE_THRES, &value);
+	com_rslt += bma2x2_set_latch_intr(BMA2x2_LATCH_DURN_NON_LATCH);
 
-	com_rslt += bma2x2_set_latch_intr(/*BMA2x2_LATCH_DURN_LATCH1*/ BMA2x2_LATCH_DURN_NON_LATCH);
-	com_rslt += bma2x2_get_latch_intr(&value);
+	/* enable interrupts */
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_LOW_G_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_HIGH_G_X_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_HIGH_G_Y_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_HIGH_G_Z_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_DATA_ENABLE, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_SLOPE_X_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_SLOPE_Y_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_SLOPE_Z_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_SINGLE_TAP_INTR, enable);
+	com_rslt += bma2x2_set_intr_enable(BMA2x2_DOUBLE_TAP_INTR, enable);
+    com_rslt += bma2x2_set_intr_enable(BMA2x2_ORIENT_INTR, enable);
+    com_rslt += bma2x2_set_intr_enable(BMA2x2_FLAT_INTR, enable);
+
+    /* enable pin1 for all interrupts */
+	com_rslt += bma2x2_set_intr_low_g(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+	com_rslt += bma2x2_set_intr_slope(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+	com_rslt += bma2x2_set_intr_orient(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+    com_rslt += bma2x2_set_intr_double_tap(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+    com_rslt += bma2x2_set_intr_high_g(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+    com_rslt += bma2x2_set_intr_single_tap(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+    com_rslt += bma2x2_set_intr_flat(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
+    com_rslt += bma2x2_set_new_data(BMA2x2_INTR1_PAD_ACTIVE_LEVEL_POS, enable);
 
 
 	if (com_rslt != 0) {
@@ -287,17 +287,6 @@ s32 bma2x2_data_readout_template(void)
 *---------------------------------------------------------------------*/
 
 while (1) {
-	/* Read the accel X data*/
-	com_rslt += bma2x2_read_accel_x(&accel_x_s16);
-	/* Read the accel Y data*/
-	com_rslt += bma2x2_read_accel_y(&accel_y_s16);
-	/* Read the accel Z data*/
-	com_rslt += bma2x2_read_accel_z(&accel_z_s16);
-
-	/* accessing the bma2x2acc_data parameter by using sample_xyz*/
-	/* Read the accel XYZ data*/
-	com_rslt += bma2x2_read_accel_xyz(&sample_xyz);
-
 	/* accessing the bma2x2acc_data_temp parameter by using sample_xyzt*/
 	/* Read the accel XYZT data*/
 	com_rslt += bma2x2_read_accel_xyzt(&sample_xyzt);
@@ -637,22 +626,17 @@ void BMA2x2_delay_msek(u32 msek)
 
 void interrupt_pin_callback(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
-	uint8_t int_data_09 = 0, int_data_0A = 0, int_data_0B = 0, int_data_0C = 0;
+	uint8_t int_data_09 = 0, int_data_0A = 0, int_data_0B = 0, int_data_0C = 0, err = 0;
 
-	bma2x2_read_reg(BMA2x2_STAT1_ADDR, &int_data_09, 1);
-	bma2x2_read_reg(BMA2x2_STAT2_ADDR, &int_data_0A, 1);
-	bma2x2_read_reg(BMA2x2_STAT_TAP_SLOPE_ADDR, &int_data_0B, 1);
-	bma2x2_read_reg(BMA2x2_STAT_ORIENT_HIGH_ADDR, &int_data_0C, 1);
+	err += bma2x2_read_reg(BMA2x2_STAT1_ADDR, &int_data_09, 1);
+	err += bma2x2_read_reg(BMA2x2_STAT2_ADDR, &int_data_0A, 1);
+	err += bma2x2_read_reg(BMA2x2_STAT_TAP_SLOPE_ADDR, &int_data_0B, 1);
+	err += bma2x2_read_reg(BMA2x2_STAT_ORIENT_HIGH_ADDR, &int_data_0C, 1);
 
-//	NRF_LOG_INFO("reg09: %d\r\n", int_data_09);
-//	NRF_LOG_FLUSH();
-//	NRF_LOG_INFO("reg0A: %d\r\n", int_data_0A);
-//	NRF_LOG_FLUSH();
-//	NRF_LOG_INFO("reg0B: %d\r\n", int_data_0B);
-//	NRF_LOG_FLUSH();
-//	NRF_LOG_INFO("reg0C: %d\r\n", int_data_0C);
-//	NRF_LOG_FLUSH();
-//	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: flat\r\n");
+	if (err != 0) {
+		NRF_LOG_INFO("\r\nBMA280 sensor example interrupt reading data ERROR!!!\r\n");
+		NRF_LOG_FLUSH();
+	}
 
 	 if ((int_data_09 & BMA2x2_LOW_G_INTR_STAT_MSK) > 0) {
 	 	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: low_g\r\n");
@@ -722,7 +706,6 @@ void interrupt_pin_callback(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t acti
 	 	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: new_data\r\n");
 	 }
 
-	NRF_LOG_FLUSH();
 }
 
 void bma_handler(nrf_drv_twi_evt_t const * p_event, void * p_context) {
@@ -742,7 +725,7 @@ static void gpio_init(void)
     err_code = nrf_drv_gpiote_init();
 	APP_ERROR_CHECK(err_code);
 
-    nrf_drv_gpiote_in_config_t in_config = GPIOTE_CONFIG_IN_SENSE_HITOLO(true);
+    nrf_drv_gpiote_in_config_t in_config = GPIOTE_CONFIG_IN_SENSE_TOGGLE(true);
     in_config.pull = NRF_GPIO_PIN_PULLUP;
 
     err_code = nrf_drv_gpiote_in_init(BMA280_PIN1, &in_config, interrupt_pin_callback);
