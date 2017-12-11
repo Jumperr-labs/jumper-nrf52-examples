@@ -1,0 +1,32 @@
+{
+    "DataGenerators": [
+        {
+            "id": 1,
+            "type": "File",
+            "config": {
+                "path": "bma_temperature_data"
+            }
+        },
+        {
+            "id": 2,
+            "type": "File",
+            "config": {
+                "path": "bma_x_acceleration_data"
+            }
+        },
+        {
+            "id": 3,
+            "type": "File",
+            "config": {
+                "path": "bma_y_acceleration_data"
+            }
+        },
+        {
+            "id": 4,
+            "type": "File",
+            "config": {
+                "path": "bma_z_acceleration_data"
+            }
+        }
+    ]
+}
