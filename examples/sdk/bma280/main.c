@@ -291,10 +291,10 @@ while (1) {
 	/* Read the accel XYZT data*/
 	com_rslt += bma2x2_read_accel_xyzt(&sample_xyzt);
 
-    NRF_LOG_INFO(" x: %d\r\n", (double)sample_xyzt.x);
-    NRF_LOG_INFO(" y: %d\r\n", (double)sample_xyzt.y);
-    NRF_LOG_INFO(" z: %d\r\n", (double)sample_xyzt.z);
-	NRF_LOG_INFO(" temp: %d\r\n\r\n", (sample_xyzt.temp / 2) + 23);
+//    NRF_LOG_INFO(" x: %d\r\n", (double)sample_xyzt.x);
+//    NRF_LOG_INFO(" y: %d\r\n", (double)sample_xyzt.y);
+//    NRF_LOG_INFO(" z: %d\r\n", (double)sample_xyzt.z);
+//	NRF_LOG_INFO(" temp: %d\r\n\r\n", (sample_xyzt.temp / 2) + 23);
 	NRF_LOG_FLUSH();
 	
 	if (com_rslt != 0) {
@@ -634,76 +634,76 @@ void interrupt_pin_callback(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t acti
 	err += bma2x2_read_reg(BMA2x2_STAT_ORIENT_HIGH_ADDR, &int_data_0C, 1);
 
 	if (err != 0) {
-		NRF_LOG_INFO("\r\nBMA280 sensor example interrupt reading data ERROR!!!\r\n");
+		NRF_LOG_INFO("BMA280 sensor example interrupt reading data ERROR!!!\r\n");
 		NRF_LOG_FLUSH();
 	}
 
 	 if ((int_data_09 & BMA2x2_LOW_G_INTR_STAT_MSK) > 0) {
-	 	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: low_g\r\n");
+	 	NRF_LOG_INFO("Firmware recognized bma280 interrupt: low_g\r\n\r\n");
 	 }
 
 	 if ((int_data_09 & BMA2x2_HIGH_G_INTR_STAT_MSK) > 0) {
 	 	if ((int_data_0C & BMA2x2_HIGH_G_FIRST_X_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: high_g_x\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: high_g_x\r\n");
 	 	} else if ((int_data_0C & BMA2x2_HIGH_G_FIRST_Y_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: high_g_y\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: high_g_y\r\n");
 	 	} else if ((int_data_0C & BMA2x2_HIGH_G_FIRST_Z_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: high_g_z\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: high_g_z\r\n");
 	 	}
 	 }
 
 	 if ((int_data_09 & BMA2x2_SLOPE_INTR_STAT_MSK) > 0) {
 	 	if ((int_data_0B & BMA2x2_SLOPE_FIRST_X_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: slope_x\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: slope_x\r\n");
 	 	} else if ((int_data_0B & BMA2x2_SLOPE_FIRST_Y_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: slope_y\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: slope_y\r\n");
 	 	} else if ((int_data_0B & BMA2x2_SLOPE_FIRST_Z_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: slope_z\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: slope_z\r\n");
 	 	}
 	 }
 
 	 if ((int_data_09 & BMA2x2_DOUBLE_TAP_INTR_STAT_MSK) > 0) {
 	 	if ((int_data_0B & BMA2x2_TAP_FIRST_X_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: double_tap_x\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: double_tap_x\r\n");
 	 	} else if ((int_data_0B & BMA2x2_TAP_FIRST_Y_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: double_tap_y\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: double_tap_y\r\n");
 	 	} else if ((int_data_0B & BMA2x2_TAP_FIRST_Z_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: double_tap_z\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: double_tap_z\r\n");
 	 	}
 	 }
 
 	 if ((int_data_09 & BMA2x2_SINGLE_TAP_INTR_STAT_MSK) > 0) {
 	 	if ((int_data_0B & BMA2x2_TAP_FIRST_X_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: single_tap_x\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: single_tap_x\r\n");
 	 	} else if ((int_data_0B & BMA2x2_TAP_FIRST_Y_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: single_tap_y\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: single_tap_y\r\n");
 	 	} else if ((int_data_0B & BMA2x2_TAP_FIRST_Z_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: single_tap_z\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: single_tap_z\r\n");
 	 	}
 	 }
 
 	 if ((int_data_09 & BMA2x2_ORIENT_INTR_STAT_MSK) > 0) {
 	 	if ((int_data_0C & BMA2x2_ORIENT_XY_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: orient_xy\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: orient_xy\r\n");
 	 	} else if ((int_data_0C & BMA2x2_ORIENT_Z_MSK) > 0) {
-	 		NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: orient_z\r\n");
+	 		NRF_LOG_INFO("Firmware recognized bma280 interrupt: orient_z\r\n");
 	 	}
 	 }
 
 	 if ((int_data_09 & BMA2x2_FLAT_INTR_STAT_MSK) > 0) {
-	 	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: flat\r\n");
+	 	NRF_LOG_INFO("Firmware recognized bma280 interrupt: flat\r\n");
 	 }
 
 	 if ((int_data_0A & BMA2x2_FIFO_FULL_INTR_STAT_MSK) > 0) {
-	 	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: fifo_full\r\n");
+	 	NRF_LOG_INFO("Firmware recognized bma280 interrupt: fifo_full\r\n");
 	 }
 
 	 if ((int_data_0A & BMA2x2_FIFO_WM_INTR_STAT_MSK) > 0) {
-	 	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: fifo_watermark\r\n");
+	 	NRF_LOG_INFO("Firmware recognized bma280 interrupt: fifo_watermark\r\n");
 	 }
 
 	 if ((int_data_0A & BMA2x2_DATA_INTR_STAT_MSK) > 0) {
-	 	NRF_LOG_INFO("\r\nFirmware recognized bma280 interrupt: new_data\r\n");
+	 	NRF_LOG_INFO("Firmware recognized bma280 interrupt: new_data\r\n");
 	 }
 
 }
@@ -734,7 +734,7 @@ static void gpio_init(void)
 	nrf_drv_gpiote_in_event_enable(BMA280_PIN1, true);
 	
 	if (err_code != 0) {
-		NRF_LOG_INFO("\r\nBMA280 sensor example initialize gpiote ERROR!!!\r\n");
+		NRF_LOG_INFO("BMA280 sensor example initialize gpiote ERROR!!!\r\n");
 		NRF_LOG_FLUSH();
 	} 
 }
@@ -760,7 +760,7 @@ void twi_init (void)
 int main(void) {
 	APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 
-	NRF_LOG_INFO("\r\nBMA280 sensor example\r\n");
+	NRF_LOG_INFO("BMA280 sensor example\r\n");
 	twi_init();
 	gpio_init();
 	NRF_LOG_FLUSH();
