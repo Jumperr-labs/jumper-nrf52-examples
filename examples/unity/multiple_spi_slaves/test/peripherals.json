@@ -85,13 +85,62 @@
 				"sclk": 3,
 				"mosi": 4,
 				"miso": 28,
-				"ss": 29,
+				"ss": 27,
 				"cpol": 0,
 				"cpha": 0,
-				"max_frequency": 5000000,
+				"max_frequency": 1000000,
 				"bit_order": "msb_first"
 			}
-		}	],
+		},
+		{
+			"name": "ECHO_SPI_SLAVE_1",
+			"id": 9,
+			"type": "Peripheral",
+			"class": "EchoSpiSlave",
+			"config": {
+				"sclk": 3,
+				"mosi": 4,
+				"miso": 28,
+				"ss": 28,
+				"cpol": 0,
+				"cpha": 1,
+				"max_frequency": 1000000,
+				"bit_order": "msb_first"
+			}
+		},
+		{
+			"name": "ECHO_SPI_SLAVE_2",
+			"id": 10,
+			"type": "Peripheral",
+			"class": "EchoSpiSlave",
+			"config": {
+				"sclk": 3,
+				"mosi": 4,
+				"miso": 28,
+				"ss": 29,
+				"cpol": 1,
+				"cpha": 0,
+				"max_frequency": 1000000,
+				"bit_order": "msb_first"
+			}
+		},
+		{
+			"name": "ECHO_SPI_SLAVE_3",
+			"id": 11,
+			"type": "Peripheral",
+			"class": "EchoSpiSlave",
+			"config": {
+				"sclk": 3,
+				"mosi": 4,
+				"miso": 28,
+				"ss": 30,
+				"cpol": 1,
+				"cpha": 1,
+				"max_frequency": 1000000,
+				"bit_order": "msb_first"
+			}
+		}
+	],
 	"DeviceConfiguration": [
 		{
 			"_description": "set the fCODEPAGESIZE in the FICR (0x10000010)",
