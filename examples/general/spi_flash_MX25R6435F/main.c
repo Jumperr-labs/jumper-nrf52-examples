@@ -52,11 +52,19 @@
 static const nrf_drv_spi_t spi = NRF_DRV_SPI_INSTANCE(SPI_INSTANCE);  /**< SPI instance. */
 static volatile bool spi_xfer_done;  /**< Flag used to indicate that SPI instance completed the transfer. */
 
+#define COMMAND_RES 0xAB
+#define COMMAND_REMS 0x90
 #define COMMAND_RDID 0x9F
 
 struct __attribute__((__packed__)) rdid {
     uint8_t manufacturer_id;
-    uint16_t device_id;
+    uint8_t memory_type;
+    uint8_t memory_density;
+};
+
+struct __attribute__((__packed__)) rems {
+    uint8_t manufacturer_id;
+    uint8_t memory_density;
 };
 
 /**
@@ -85,10 +93,17 @@ void MX25R6435F_command(uint8_t command, uint8_t *rx_buffer, uint8_t rx_buffer_l
     }
 }
 
-void read_device_id(struct rdid *device_rdid) {
-    MX25R6435F_command(COMMAND_RDID, (uint8_t*) device_rdid, 3);
+void rdid_command(struct rdid *device_rdid) {
+    MX25R6435F_command(COMMAND_RDID, (uint8_t*) device_rdid, sizeof(struct rdid));
 }
 
+void rems_command(struct rems *device_rems) {
+    MX25R6435F_command(COMMAND_REMS, (uint8_t*) device_rems, sizeof(struct rems));
+}
+
+void res_command(uint8_t *res) {
+    MX25R6435F_command(COMMAND_RES, res, sizeof(uint8_t));
+}
 
 int main(void)
 {
@@ -98,6 +113,7 @@ int main(void)
     NRF_LOG_DEFAULT_BACKENDS_INIT();
     
     NRF_LOG_INFO("SPI example.");
+    NRF_LOG_INFO("-----------------------------------------------------------------");
     NRF_LOG_FLUSH();
 
     nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
@@ -107,12 +123,30 @@ int main(void)
     spi_config.sck_pin  = SPI_SCK_PIN;
     APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
 
+    NRF_LOG_INFO("RDID Command");
     struct rdid device_rdid;
-    read_device_id(&device_rdid);
-
+    rdid_command(&device_rdid);
     NRF_LOG_INFO("manufacturer id: 0x%x", device_rdid.manufacturer_id);
-    NRF_LOG_INFO("device id: 0x%x", device_rdid.device_id);
-    // NRF_LOG_INFO("arr: %x, %x, %x", ((char*) &device_rdid)[0], ((char*) &device_rdid)[1], ((char*) &device_rdid)[2]);
+    NRF_LOG_INFO("memory_type: 0x%x", device_rdid.memory_type);
+    NRF_LOG_INFO("memory_density: 0x%x", device_rdid.memory_density);
+
+    NRF_LOG_INFO("-----------------------------------------------------------------");
+    NRF_LOG_FLUSH();
+
+    NRF_LOG_INFO("REMS Command");
+    struct rems device_rems;
+    rems_command(&device_rems);
+    NRF_LOG_INFO("manufacturer id: 0x%x", device_rems.manufacturer_id);
+    NRF_LOG_INFO("memory_density: 0x%x", device_rems.memory_density);
+
+    NRF_LOG_INFO("-----------------------------------------------------------------");
+    NRF_LOG_FLUSH();
+
+    NRF_LOG_INFO("RES Command");
+    uint8_t res;
+    res_command(&res);
+    NRF_LOG_INFO("manufacturer id: 0x%x", res);
+    NRF_LOG_INFO("-----------------------------------------------------------------");
     NRF_LOG_FLUSH();
 
     while (1)
