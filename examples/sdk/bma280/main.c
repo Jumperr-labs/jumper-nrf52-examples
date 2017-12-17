@@ -639,7 +639,7 @@ void interrupt_pin_callback(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t acti
 	}
 
 	 if ((int_data_09 & BMA2x2_LOW_G_INTR_STAT_MSK) > 0) {
-	 	NRF_LOG_INFO("Firmware recognized bma280 interrupt: low_g\r\n\r\n");
+	 	NRF_LOG_INFO("Firmware recognized bma280 interrupt: low_g\r\n");
 	 }
 
 	 if ((int_data_09 & BMA2x2_HIGH_G_INTR_STAT_MSK) > 0) {
