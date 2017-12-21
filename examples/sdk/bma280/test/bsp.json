@@ -1,0 +1,320 @@
+{
+	"components": [
+		{
+			"name": "nrf52832",
+			"id": 0,
+			"type": "MCU",
+			"class": "MCU",
+			"config": {
+				"load_ble_hack": false,
+				"radio" : {
+					"role": "slave",
+					"ip": "127.0.0.1",
+					"port": 41000
+				},
+				"pins": {
+					"0": 0,
+					"1": 1,
+					"2": 2,
+					"3": 3,
+					"4": 4,
+					"5": 5,
+					"6": 6,
+					"7": 7,
+					"8": 8,
+					"9": 9,
+					"10": 10,
+					"11": 11,
+					"12": 12,
+					"13": 13,
+					"14": 14,
+					"15": 15,
+					"16": 16,
+					"17": 17,
+					"18": 18,
+					"19": 19,
+					"20": 20,
+					"21": 21,
+					"22": 22,
+					"23": 23,
+					"24": 24,
+					"25": 25,
+					"26": 26,
+					"27": 27,
+					"28": 28,
+					"29": 29,
+					"30": 30,
+					"31": 31
+				},
+				"internal_peripherals" : [
+					{
+						"class": "Flash",
+						"id": 1,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "Data RAM",
+						"id": 2,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "ITM",
+						"id": 3,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "DWT",
+						"id": 4,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "FPB",
+						"id": 5,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "TPIU",
+						"id": 6,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "ETM",
+						"id": 7,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "System",
+						"id": 8,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "SystemControlBlock",
+						"id": 9,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "Register_router",
+						"id": 10,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "P0",
+						"id": 11,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "GPIOTE",
+						"id": 12,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "UICR",
+						"id": 13,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "FICR",
+						"id": 14,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "UARTE",
+						"id": 15,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "TIMER",
+						"id": 16,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "TIMER1",
+						"id": 17,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "TIMER2",
+						"id": 18,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "RADIO",
+						"id": 19,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "RNG",
+						"id": 20,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "SPIM_TWIM",
+						"id": 21,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "SPIM_TWIM1",
+						"id": 22,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "SPIM_TWIM2",
+						"id": 23,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "TEMP",
+						"id": 24,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "RTC",
+						"id": 25,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "RTC1",
+						"id": 26,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "RTC2",
+						"id": 27,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "WDT",
+						"id": 28,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "MWU",
+						"id": 29,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "PPI",
+						"id": 30,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "LPCOMP",
+						"id": 31,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "ECB",
+						"id": 32,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "CCM",
+						"id": 33,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "SAADC",
+						"id": 34,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "PWM",
+						"id": 35,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "PWM1",
+						"id": 36,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "PWM2",
+						"id": 37,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "POWER_CLOCK",
+						"id": 38,
+						"type": "Internal Peripheral"
+					},
+					{
+						"class": "SUDO",
+						"id": 39,
+						"type": "Internal Peripheral"
+					}
+				]
+			}
+		},
+		{
+			"name": "ResetButton",
+			"id": 2,
+			"type": "Peripheral",
+			"class": "Button",
+			"config": {
+				"in": 21
+			}
+		},
+		{
+			"name": "BUTTON_1",
+			"id": 3,
+			"type": "Peripheral",
+			"class": "Button",
+			"config": {
+				"in": 13
+			}
+		},
+		{
+			"name": "BUTTON_2",
+			"id": 4,
+			"type": "Peripheral",
+			"class": "Button",
+			"config": {
+				"in": 14
+			}
+		},
+		{
+			"name": "BUTTON_3",
+			"id": 5,
+			"type": "Peripheral",
+			"class": "Button",
+			"config": {
+				"in": 15
+			}
+		},
+		{
+			"name": "BUTTON_4",
+			"id": 6,
+			"type": "Peripheral",
+			"class": "Button",
+			"config": {
+				"in": 16
+			}
+		},
+		{
+			"name": "SHORT_0",
+			"id": 7,
+			"type": "Peripheral",
+			"class": "Short",
+			"config": {
+				"pin0": 2,
+				"pin1": 4
+			}
+		},
+		{
+			"name": "BMA280Device",
+			"id": 10,
+			"type": "Peripheral",
+			"class": "BMA280",
+			"config": {
+				"pin1": 24,
+				"pin2": 25,
+				"sda": 26,
+				"scl": 27,
+				"bmaTemperatureGenerator": 1,
+                "bmaXAccelerationGenerator": 2,
+				"bmaYAccelerationGenerator": 3,
+				"bmaZAccelerationGenerator": 4
+			}
+		}
+	]
+}
