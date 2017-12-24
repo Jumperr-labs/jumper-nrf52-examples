@@ -52,9 +52,11 @@
 static const nrf_drv_spi_t spi = NRF_DRV_SPI_INSTANCE(SPI_INSTANCE);  /**< SPI instance. */
 static volatile bool spi_xfer_done;  /**< Flag used to indicate that SPI instance completed the transfer. */
 
-#define COMMAND_RES 0xAB
-#define COMMAND_REMS 0x90
-#define COMMAND_RDID 0x9F
+static uint8_t res_command[4] = {0xAB, 0x00, 0x00, 0x00};
+static uint8_t rems_command_add0[4] = {0x90, 0x00, 0x00, 0x00};
+static uint8_t rems_command_add1[4] = {0x90, 0x00, 0x00, 0x01};
+static uint8_t rdid_command[1] = {0x9f};
+
 
 struct __attribute__((__packed__)) rdid {
     uint8_t manufacturer_id;
@@ -62,10 +64,16 @@ struct __attribute__((__packed__)) rdid {
     uint8_t memory_density;
 };
 
-struct __attribute__((__packed__)) rems {
+struct __attribute__((__packed__)) rems_add0 {
     uint8_t manufacturer_id;
     uint8_t memory_density;
 };
+
+struct __attribute__((__packed__)) rems_add1 {
+    uint8_t memory_density;
+    uint8_t manufacturer_id;
+};
+
 
 /**
  * @brief SPI user event handler.
@@ -77,9 +85,9 @@ void spi_event_handler(nrf_drv_spi_evt_t const * p_event,
     spi_xfer_done = true;
 }
 
-void MX25R6435F_command(uint8_t command, uint8_t *rx_buffer, uint8_t rx_buffer_length) {
+void MX25R6435F_command(uint8_t *command_buffer, uint8_t command_length, uint8_t *rx_buffer, uint8_t rx_buffer_length) {
     spi_xfer_done = false;
-    APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, &command, sizeof(command), NULL, 0));
+    APP_ERROR_CHECK(nrf_drv_spi_transfer(&spi, command_buffer, command_length, NULL, 0));
     while (!spi_xfer_done)
     {
         __WFE();
@@ -93,16 +101,20 @@ void MX25R6435F_command(uint8_t command, uint8_t *rx_buffer, uint8_t rx_buffer_l
     }
 }
 
-void rdid_command(struct rdid *device_rdid) {
-    MX25R6435F_command(COMMAND_RDID, (uint8_t*) device_rdid, sizeof(struct rdid));
+void send_rdid_command(struct rdid *rdid_response) {
+    MX25R6435F_command(rdid_command, sizeof(rdid_command), (uint8_t*) rdid_response, sizeof(struct rdid));
 }
 
-void rems_command(struct rems *device_rems) {
-    MX25R6435F_command(COMMAND_REMS, (uint8_t*) device_rems, sizeof(struct rems));
+void send_rems_command_add0(struct rems_add0 *rems_response) {
+    MX25R6435F_command(rems_command_add0, sizeof(rems_command_add0), (uint8_t*) rems_response, sizeof(struct rems_add0));
 }
 
-void res_command(uint8_t *res) {
-    MX25R6435F_command(COMMAND_RES, res, sizeof(uint8_t));
+void send_rems_command_add1(struct rems_add1 *rems_response) {
+    MX25R6435F_command(rems_command_add1, sizeof(rems_command_add1), (uint8_t*) rems_response, sizeof(struct rems_add1));
+}
+
+void send_res_command(uint8_t *res_response) {
+    MX25R6435F_command(res_command, sizeof(res_command), res_response, sizeof(*res_response));
 }
 
 int main(void)
@@ -125,7 +137,7 @@ int main(void)
 
     NRF_LOG_INFO("RDID Command");
     struct rdid device_rdid;
-    rdid_command(&device_rdid);
+    send_rdid_command(&device_rdid);
     NRF_LOG_INFO("manufacturer id: 0x%x", device_rdid.manufacturer_id);
     NRF_LOG_INFO("memory_type: 0x%x", device_rdid.memory_type);
     NRF_LOG_INFO("memory_density: 0x%x", device_rdid.memory_density);
@@ -133,18 +145,27 @@ int main(void)
     NRF_LOG_INFO("-----------------------------------------------------------------");
     NRF_LOG_FLUSH();
 
-    NRF_LOG_INFO("REMS Command");
-    struct rems device_rems;
-    rems_command(&device_rems);
-    NRF_LOG_INFO("manufacturer id: 0x%x", device_rems.manufacturer_id);
-    NRF_LOG_INFO("memory_density: 0x%x", device_rems.memory_density);
+    NRF_LOG_INFO("REMS Command (ADD=0)");
+    struct rems_add0 device_rems_add0;
+    send_rems_command_add0(&device_rems_add0);
+    NRF_LOG_INFO("manufacturer id: 0x%x", device_rems_add0.manufacturer_id);
+    NRF_LOG_INFO("memory_density: 0x%x", device_rems_add0.memory_density);
+
+    NRF_LOG_INFO("-----------------------------------------------------------------");
+    NRF_LOG_FLUSH();
+
+    NRF_LOG_INFO("REMS Command (ADD=1)");
+    struct rems_add1 device_rems_add1;
+    send_rems_command_add1(&device_rems_add1);
+    NRF_LOG_INFO("manufacturer id: 0x%x", device_rems_add1.manufacturer_id);
+    NRF_LOG_INFO("memory_density: 0x%x", device_rems_add1.memory_density);
 
     NRF_LOG_INFO("-----------------------------------------------------------------");
     NRF_LOG_FLUSH();
 
     NRF_LOG_INFO("RES Command");
     uint8_t res;
-    res_command(&res);
+    send_res_command(&res);
     NRF_LOG_INFO("manufacturer id: 0x%x", res);
     NRF_LOG_INFO("-----------------------------------------------------------------");
     NRF_LOG_FLUSH();
