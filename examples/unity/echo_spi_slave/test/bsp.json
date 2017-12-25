@@ -1,0 +1,27 @@
+{
+	"description": "Nrf52 SPI test board",
+	"components": [
+		{
+			"name": "nrf52832",
+			"id": 0,
+			"type": "MCU",
+			"class": "MCU"
+		},
+		{
+			"name": "ECHO_SPI_SLAVE_0",
+			"id": 8,
+			"type": "Peripheral",
+			"class": "EchoSpiSlave",
+			"config": {
+				"sclk": 3,
+				"mosi": 4,
+				"miso": 28,
+				"ss": 29,
+				"cpol": 0,
+				"cpha": 0,
+				"max_frequency": 5000000,
+				"bit_order": "msb_first"
+			}
+		}
+	]
+}
