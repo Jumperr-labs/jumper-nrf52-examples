@@ -47,6 +47,7 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
+#include "jumper.h"
 
 #define SPI_INSTANCE  0 /**< SPI instance index. */
 static const nrf_drv_spi_t spi = NRF_DRV_SPI_INSTANCE(SPI_INSTANCE);  /**< SPI instance. */
@@ -170,8 +171,5 @@ int main(void)
     NRF_LOG_INFO("-----------------------------------------------------------------");
     NRF_LOG_FLUSH();
 
-    while (1)
-    {
-        __WFE();
-    }
+    jumper_sudo_exit_with_exit_code(0);
 }

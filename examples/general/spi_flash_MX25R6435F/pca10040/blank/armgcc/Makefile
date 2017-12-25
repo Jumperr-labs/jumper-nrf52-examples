@@ -41,6 +41,7 @@ SRC_FILES += \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_printf.c \
   $(SDK_ROOT)/components/toolchain/gcc/gcc_startup_nrf52.S \
   $(SDK_ROOT)/components/toolchain/system_nrf52.c \
+  $(PROJ_DIR)/jumper.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
