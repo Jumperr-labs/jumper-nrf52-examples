@@ -1498,12 +1498,12 @@
     void print_sensor_data(struct bme280_data *comp_data)
     {
     #ifdef BME280_FLOAT_ENABLE
-        NRF_LOG_INFO("  pressure: %d.\r\n", comp_data->pressure);
+        // NRF_LOG_INFO("  pressure: %d.\r\n", comp_data->pressure);
         NRF_LOG_INFO("  Temperature: %d.\r\n", comp_data->temperature);
         NRF_LOG_INFO("  humidity: %d.\r\n\r\n", comp_data->humidity);
         NRF_LOG_FLUSH();
     #else
-        NRF_LOG_INFO("  pressure: %d.\r\n", comp_data->pressure);
+        // NRF_LOG_INFO("  pressure: %d.\r\n", comp_data->pressure);
         NRF_LOG_INFO("  Temperature: %d.\r\n", comp_data->temperature);
         NRF_LOG_INFO("  humidity: %d.\r\n\r\n", comp_data->humidity);
         NRF_LOG_FLUSH();
