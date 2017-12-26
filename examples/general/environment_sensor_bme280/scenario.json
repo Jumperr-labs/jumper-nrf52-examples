@@ -4,43 +4,17 @@
             "id": 1,
             "type": "File",
             "config": {
-                "path": "bme_temperature_data",
-                "timing": {
-                    "changeInterval": 1,
-                    "changeIntervalUnit": "s"                 
-                }
+                "path": "bme_humidity_data"
             }
         },
         {
             "id": 2,
             "type": "File",
             "config": {
-                "path": "bme_humidity_data"
-            }
-        },
-        {
-            "id": 4,
-            "type": "values",
-            "config": {
-                "dataType": "double",
-                "validValues": [10.02, 25.13, 42.44, 50.01],
+                "path": "bme_temperature_data",
                 "timing": {
-                    "changeInterval": 10,
-                    "changeIntervalUnit": "ms"
-                }
-            }
-        },
-        {
-            "id": 6,
-            "type": "sin",
-            "config": {
-                "dataType": "integer",
-                "min": 20,
-                "max": 40,
-                "sinFrequency": 0.5,
-                "timing" : {
-                    "changeInterval": 500,
-                    "changeIntervalUnit": "ms" 
+                    "changeInterval": 1,
+                    "changeIntervalUnit": "s"
                 }
             }
         }

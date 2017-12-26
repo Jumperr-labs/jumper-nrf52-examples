@@ -1540,9 +1540,8 @@
         return rslt;
     }
 
-    int8_t stream_sensor_data_normal_mode(struct bme280_dev *dev)
+    void stream_sensor_data_normal_mode(struct bme280_dev *dev)
     {
-        int8_t rslt;
         uint8_t settings_sel;
         struct bme280_data comp_data;
     
@@ -1558,19 +1557,17 @@
         settings_sel |= BME280_OSR_HUM_SEL;
         settings_sel |= BME280_STANDBY_SEL;
         settings_sel |= BME280_FILTER_SEL;
-        rslt = bme280_set_sensor_settings(settings_sel, dev);
-        rslt = bme280_set_sensor_mode(BME280_NORMAL_MODE, dev);
+        bme280_set_sensor_settings(settings_sel, dev);
+        bme280_set_sensor_mode(BME280_NORMAL_MODE, dev);
     
         NRF_LOG_INFO("Temperature, Pressure, Humidity\r\n");
         NRF_LOG_FLUSH();
-        for (int i = 0; i < 8; i++) {
+        while (1) {
             /* Delay while the sensor completes a measurement */
             dev->delay_ms(70);
-            rslt = bme280_get_sensor_data(BME280_ALL, &comp_data, dev);
+            bme280_get_sensor_data(BME280_ALL, &comp_data, dev);
             print_sensor_data(&comp_data);
         }
-    
-        return rslt;
     }
 
     void bme_handler(nrf_drv_twi_evt_t const * p_event, void * p_context){
@@ -1621,12 +1618,8 @@
         NRF_LOG_INFO("result: %d\r\n", rslt);
         NRF_LOG_FLUSH();
 
-        /* can be either forced or normal mode */
-        // stream_sensor_data_normal_mode(%dev);
-        stream_sensor_data_forced_mode(&dev);
 
-        jumper_sudo_exit_with_exit_code(0);
-       
+        stream_sensor_data_normal_mode(&dev);
         while(1) {}
     }
 
