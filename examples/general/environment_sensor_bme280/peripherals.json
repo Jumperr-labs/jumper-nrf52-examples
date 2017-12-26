@@ -117,7 +117,7 @@
 			}
 		},
 		{
-			"name": "BME280Device",
+			"name": "BME280",
 			"id": 9,
 			"type": "Peripheral",
 			"class": "BME280",
