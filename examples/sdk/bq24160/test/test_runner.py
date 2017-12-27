@@ -25,7 +25,6 @@ class TestBq24160(unittest.TestCase):
         self.vlab.stop()
 
     def test_should_raise_interrupt_bq24160(self):
-        self.assertRegexpMatches(self.uart.read(), "BQ24160")
         print ("raise watchdog interrupt")
         self.pin_number_should_toggle = 3
         self.success = False
@@ -40,7 +39,6 @@ class TestBq24160(unittest.TestCase):
         self.assertRegexpMatches(self.uart.read(), "Watchdog int down")
 
     def test_should_charge_discharge_bq24160(self):
-        self.assertRegexpMatches(self.uart.read(), "BQ24160")
         print ("charge usb")
         self.pin_number_should_toggle = 6
         self.success = False
