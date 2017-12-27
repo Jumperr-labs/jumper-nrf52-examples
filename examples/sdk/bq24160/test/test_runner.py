@@ -19,7 +19,6 @@ class TestBq24160(unittest.TestCase):
         self.pin_number_should_toggle = 6
 
     def pins_listener(self, pin_number, pin_level):
-	print pin_number
         if self.pin_number_should_toggle == pin_number:
             self.success = True
 
