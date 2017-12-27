@@ -32,7 +32,7 @@
 
 #define PIN_OUT_CHARGE_USB 6
 #define PIN_OUT_CHARGE_IN 5
-#define PIN_OUT_DISCHARGE 4
+#define PIN_OUT_DISCHARGE 8
 #define PIN_OUT_INT_UP 3
 #define PIN_OUT_INT_DOWN 7
 #define SCL_PIN 27
@@ -240,33 +240,31 @@ void in_pin_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 	BQ24160_IIC0_EReadByte(BQ24160_ADDRESS, REG_STATUS, rx_buff_status);
 	if (!interrupt_up && (rx_buff_status[0] & REG_STATUS_FAULT_MASK) == NORMAL_FAULT) {
 	    if ((rx_buff_status[0] & REG_STATUS_STAT_MASK) == STAT_CHARGING_FROM_USB) {
-	        NRF_LOG_INFO("\r\nCharging from usb\r\n");
+	         NRF_LOG_INFO("\r\nCharging from usb\r\n");
 	        nrf_drv_gpiote_out_toggle(PIN_OUT_CHARGE_USB);
 	    } else if ((rx_buff_status[0] & REG_STATUS_STAT_MASK) == STAT_CHARGING_FROM_IN) {
-	        NRF_LOG_INFO("\r\nCharging from in\r\n");
+	         NRF_LOG_INFO("\r\nCharging from in\r\n");
 	         nrf_drv_gpiote_out_toggle(PIN_OUT_CHARGE_IN);
 	    } else if ((rx_buff_status[0] & REG_STATUS_STAT_MASK) == STAT_CHARGING_DONE) {
-	          NRF_LOG_INFO("\r\nStopped charging\r\n");
+	           NRF_LOG_INFO("\r\nStopped charging\r\n");
 	           nrf_drv_gpiote_out_toggle(PIN_OUT_DISCHARGE);
 	    }
 	} else if (!interrupt_up && (rx_buff_status[0] & REG_STATUS_STAT_MASK) == STAT_CHARGING_FAULT &&
 	    (rx_buff_status[0] & REG_STATUS_FAULT_MASK) == WATCHDOG_EXPIRATION_INT) {
-            NRF_LOG_INFO("\r\nWatchdog int up\r\n");
+             NRF_LOG_INFO("\r\nWatchdog int up\r\n");
             interrupt_up = true;
             nrf_drv_gpiote_out_toggle(PIN_OUT_INT_UP);
     } else if (interrupt_up) {
-            NRF_LOG_INFO("\r\nWatchdog int down\r\n");
+             NRF_LOG_INFO("\r\nWatchdog int down\r\n");
             interrupt_up = false;
             nrf_drv_gpiote_out_toggle(PIN_OUT_INT_DOWN);
     }
 
-	NRF_LOG_FLUSH();
+	 NRF_LOG_FLUSH();
 }
 
 int main() {
-    APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
-	NRF_LOG_INFO("\r\nBQ24160\r\n");
-	NRF_LOG_FLUSH();
+     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
     twi_init();
 
     ret_code_t err_code;

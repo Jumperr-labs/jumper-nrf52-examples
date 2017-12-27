@@ -1,6 +1,7 @@
 import os
 import unittest
 from jumper.vlab import Vlab
+from time import sleep
 
 dir = os.path.dirname(os.path.abspath(__file__))
 fw_bin = os.path.join(dir, '..', 'pca10040', 'blank', 'armgcc', '_build', 'nrf52832_xxaa.bin')
@@ -18,6 +19,7 @@ class TestBq24160(unittest.TestCase):
         self.pin_number_should_toggle = 6
 
     def pins_listener(self, pin_number, pin_level):
+	print pin_number
         if self.pin_number_should_toggle == pin_number:
             self.success = True
 
@@ -46,7 +48,7 @@ class TestBq24160(unittest.TestCase):
         self.vlab.run_for_ms(500)
         self.assertTrue(self.success)
         self.assertRegexpMatches(self.uart.read(), "Charging from usb")
-        self.pin_number_should_toggle = 4
+        self.pin_number_should_toggle = 8
         self.success = False
         print ("discharge")
         self.vlab.bq24160.discharge()
@@ -61,7 +63,7 @@ class TestBq24160(unittest.TestCase):
         self.vlab.run_for_ms(500)
         self.assertTrue(self.success)
         self.assertRegexpMatches(self.uart.read(), "Charging from in")
-        self.pin_number_should_toggle = 4
+        self.pin_number_should_toggle = 8
         self.success = False
         print ("discharge")
         self.vlab.bq24160.discharge()
