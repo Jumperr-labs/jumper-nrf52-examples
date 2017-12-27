@@ -69,5 +69,6 @@ class TestBq24160(unittest.TestCase):
         self.assertTrue(self.success)
         self.assertRegexpMatches(self.uart.read(), "Stopped charging")
 
+
 if __name__ == '__main__':
     unittest.main()
