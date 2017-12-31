@@ -1,4 +1,4 @@
-PROJECT_NAME     := bma280_pca10040
+PROJECT_NAME     := bq24160_pca10040
 TARGETS          := nrf52832_xxaa
 OUTPUT_DIRECTORY := _build
 
@@ -6,7 +6,7 @@ SDK_ROOT := ../../../../../..
 PROJ_DIR := ../../..
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
-  LINKER_SCRIPT  := bma280_gcc_nrf52.ld
+  LINKER_SCRIPT  := bq24160_gcc_nrf52.ld
 
 # Source files common to all targets
 SRC_FILES += \
@@ -36,7 +36,6 @@ SRC_FILES += \
   $(SDK_ROOT)/components/toolchain/gcc/gcc_startup_nrf52.S \
   $(SDK_ROOT)/components/toolchain/system_nrf52.c \
   $(SDK_ROOT)/components/drivers_nrf/gpiote/nrf_drv_gpiote.c \
-  $(PROJ_DIR)/bma2x2.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \

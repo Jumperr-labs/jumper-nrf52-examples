@@ -1,12 +1,12 @@
-PROJECT_NAME     := bma280_pca10040
-TARGETS          := nrf52832_xxaa
+PROJECT_NAME     := bq24160_pca10056
+TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := _build
 
 SDK_ROOT := ../../../../../..
 PROJ_DIR := ../../..
 
-$(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
-  LINKER_SCRIPT  := bma280_gcc_nrf52.ld
+$(OUTPUT_DIRECTORY)/nrf52840_xxaa.out: \
+  LINKER_SCRIPT  := bq24160_gcc_nrf52.ld
 
 # Source files common to all targets
 SRC_FILES += \
@@ -33,10 +33,9 @@ SRC_FILES += \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_Syscalls_GCC.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_printf.c \
-  $(SDK_ROOT)/components/toolchain/gcc/gcc_startup_nrf52.S \
-  $(SDK_ROOT)/components/toolchain/system_nrf52.c \
   $(SDK_ROOT)/components/drivers_nrf/gpiote/nrf_drv_gpiote.c \
-  $(PROJ_DIR)/bma2x2.c \
+  $(SDK_ROOT)/components/toolchain/gcc/gcc_startup_nrf52840.S \
+  $(SDK_ROOT)/components/toolchain/system_nrf52840.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
@@ -64,7 +63,7 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/toolchain \
   $(SDK_ROOT)/components/drivers_nrf/common \
   $(SDK_ROOT)/external/fprintf \
-    $(SDK_ROOT)/components/drivers_nrf/gpiote \
+  $(SDK_ROOT)/components/drivers_nrf/gpiote \
 
 # Libraries common to all targets
 LIB_FILES += \
@@ -76,12 +75,10 @@ OPT = -O3 -g3
 
 # C flags common to all targets
 CFLAGS += $(OPT)
-CFLAGS += -DBOARD_PCA10040
+CFLAGS += -DBOARD_PCA10056
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
 CFLAGS += -DFLOAT_ABI_HARD
-CFLAGS += -DNRF52
-CFLAGS += -DNRF52832_XXAA
-CFLAGS += -DNRF52_PAN_74
+CFLAGS += -DNRF52840_XXAA
 CFLAGS += -mcpu=cortex-m4
 CFLAGS += -mthumb -mabi=aapcs
 CFLAGS +=  -Wall -Werror
@@ -98,12 +95,10 @@ ASMFLAGS += -g3
 ASMFLAGS += -mcpu=cortex-m4
 ASMFLAGS += -mthumb -mabi=aapcs
 ASMFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
-ASMFLAGS += -DBOARD_PCA10040
+ASMFLAGS += -DBOARD_PCA10056
 ASMFLAGS += -DCONFIG_GPIO_AS_PINRESET
 ASMFLAGS += -DFLOAT_ABI_HARD
-ASMFLAGS += -DNRF52
-ASMFLAGS += -DNRF52832_XXAA
-ASMFLAGS += -DNRF52_PAN_74
+ASMFLAGS += -DNRF52840_XXAA
 
 # Linker flags
 LDFLAGS += $(OPT)
@@ -124,12 +119,12 @@ LIB_FILES += -lc -lnosys -lm
 .PHONY: default help
 
 # Default target - first one defined
-default: nrf52832_xxaa
+default: nrf52840_xxaa
 
 # Print all targets that can be built
 help:
 	@echo following targets are available:
-	@echo		nrf52832_xxaa
+	@echo		nrf52840_xxaa
 	@echo		sdk_config - starting external tool for editing sdk_config.h
 	@echo		flash      - flashing binary
 
@@ -143,7 +138,7 @@ $(foreach target, $(TARGETS), $(call define_target, $(target)))
 .PHONY: flash erase
 
 # Flash the program
-flash: $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex
+flash: $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex
 	@echo Flashing: $<
 	nrfjprog -f nrf52 --program $< --sectorerase
 	nrfjprog -f nrf52 --reset
