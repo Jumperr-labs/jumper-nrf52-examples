@@ -13,10 +13,12 @@
 			"type": "Peripheral",
 			"class": "EchoSpiSlave",
 			"config": {
-				"sclk": 3,
-				"mosi": 4,
-				"miso": 28,
-				"ss": 29,
+				"pins": {
+					"sclk": 3,
+					"mosi": 4,
+					"miso": 28,
+					"ss": 29
+				},
 				"cpol": 0,
 				"cpha": 0,
 				"max_frequency": 5000000,

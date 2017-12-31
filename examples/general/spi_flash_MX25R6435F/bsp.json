@@ -13,10 +13,12 @@
 			"type": "Peripheral",
 			"class": "MX25R6435F",
 			"config": {
-				"sclk": 3,
-				"mosi": 4,
-				"miso": 28,
-				"ss": 29
+				"pins": {
+					"sclk": 3,
+					"mosi": 4,
+					"miso": 28,
+					"ss": 29
+				}
 			}
 		}
 	]

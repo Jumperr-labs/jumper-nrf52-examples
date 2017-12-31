@@ -5,65 +5,7 @@
 			"name": "nrf52832",
 			"id": 0,
 			"type": "MCU",
-			"class": "MCU",
-			"config":{
-				"load_ble_hack": false
-			}
-		},
-		{
-			"name": "ResetButton",
-			"id": 2,
-			"type": "Peripheral",
-			"class": "Button",
-			"config": {
-				"in": 21
-			}
-		},
-		{
-			"name": "BUTTON_1",
-			"id": 3,
-			"type": "Peripheral",
-			"class": "Button",
-			"config": {
-				"in": 13
-			}
-		},
-		{
-			"name": "BUTTON_2",
-			"id": 4,
-			"type": "Peripheral",
-			"class": "Button",
-			"config": {
-				"in": 14
-			}
-		},
-		{
-			"name": "BUTTON_3",
-			"id": 5,
-			"type": "Peripheral",
-			"class": "Button",
-			"config": {
-				"in": 15
-			}
-		},
-		{
-			"name": "BUTTON_4",
-			"id": 6,
-			"type": "Peripheral",
-			"class": "Button",
-			"config": {
-				"in": 16
-			}
-		},
-		{
-			"name": "SHORT_0",
-			"id": 7,
-			"type": "Peripheral",
-			"class": "Short",
-			"config": {
-				"pin0": 2,
-				"pin1": 4
-			}
+			"class": "MCU"
 		},
 		{
 			"name": "BMA280Device",
@@ -71,10 +13,12 @@
 			"type": "Peripheral",
 			"class": "BMA280",
 			"config": {
-				"pin1": 24,
-				"pin2": 25,
-				"sda": 26,
-				"scl": 27,
+				"pins": {
+					"pin1": 24,
+					"pin2": 25,
+					"sda": 26,
+					"scl": 27
+				},
 				"bmaTemperatureGenerator": 1,
                 "bmaXAccelerationGenerator": 2,
 				"bmaYAccelerationGenerator": 3,

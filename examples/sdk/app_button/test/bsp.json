@@ -13,7 +13,9 @@
 			"type": "Peripheral",
 			"class": "Button",
 			"config": {
-				"in": 21
+				"pins": {
+					"in": 21
+				}
 			}
 		},
 		{
@@ -22,7 +24,9 @@
 			"type": "Peripheral",
 			"class": "Button",
 			"config": {
-				"in": 13
+				"pins": {
+					"in": 13
+				}
 			}
 		},
 		{
@@ -31,7 +35,9 @@
 			"type": "Peripheral",
 			"class": "Button",
 			"config": {
-				"in": 14
+				"pins": {
+					"in": 14
+				}
 			}
 		},
 		{
@@ -40,7 +46,9 @@
 			"type": "Peripheral",
 			"class": "Button",
 			"config": {
-				"in": 15
+				"pins": {
+					"in": 15
+				}
 			}
 		},
 		{
@@ -49,7 +57,9 @@
 			"type": "Peripheral",
 			"class": "Button",
 			"config": {
-				"in": 16
+				"pins": {
+					"in": 16
+				}
 			}
 		},
 		{
@@ -58,8 +68,10 @@
 			"type": "Peripheral",
 			"class": "Short",
 			"config": {
-				"pin0": 2,
-				"pin1": 4
+				"pins": {
+					"pin0": 2,
+					"pin1": 4
+				}
 			}
 		}
 	]
