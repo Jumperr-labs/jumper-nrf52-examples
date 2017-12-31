@@ -1,7 +1,6 @@
 import os
 import unittest
 from jumper.vlab import Vlab
-from time import sleep
 
 dir = os.path.dirname(os.path.abspath(__file__))
 fw_bin = os.path.join(dir, '..', 'pca10040', 'blank', 'armgcc', '_build', 'nrf52832_xxaa.bin')
@@ -40,6 +39,7 @@ class TestBq24160(unittest.TestCase):
         self.assertRegexpMatches(self.uart.read(), "Watchdog int down")
 
     def test_should_charge_discharge_bq24160(self):
+
         print ("charge usb")
         self.pin_number_should_toggle = 6
         self.success = False
