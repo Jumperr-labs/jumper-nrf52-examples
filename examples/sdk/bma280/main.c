@@ -88,6 +88,7 @@
 #include "nrf_delay.h"
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
+#include "nrf_log_default_backends.h"
 #include "nordic_common.h"
 #include "sdk_config.h"
 #include "nrf.h"
@@ -759,6 +760,7 @@ void twi_init (void)
 
 int main(void) {
 	APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
+	NRF_LOG_DEFAULT_BACKENDS_INIT();
 
 	NRF_LOG_INFO("BMA280 sensor example\r\n");
 	twi_init();

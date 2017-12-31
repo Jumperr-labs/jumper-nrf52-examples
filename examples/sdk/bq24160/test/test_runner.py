@@ -31,15 +31,12 @@ class TestBq24160(unittest.TestCase):
         self.vlab.bq24160.interrupt(self.vlab.bq24160.WATCHDOG_EXPIRATION_INTERRUPT)
         self.vlab.run_for_ms(0.5)
         self.assertTrue(self.success)
-        self.assertRegexpMatches(self.uart.read(), "Watchdog int up")
         self.pin_number_should_toggle = 7
         self.success = False
         self.vlab.run_for_ms(1.2)
         self.assertTrue(self.success)
-        self.assertRegexpMatches(self.uart.read(), "Watchdog int down")
 
     def test_should_charge_discharge_bq24160(self):
-
         print ("charge usb")
         self.pin_number_should_toggle = 6
         self.success = False

@@ -130,19 +130,6 @@
 
 // </e>
 
-// <q> TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED  - Enables nRF52 anomaly 109 workaround for TWIM.
- 
-
-// <i> The workaround uses interrupts to wake up the CPU by catching
-// <i> the start event of zero-frequency transmission, clear the 
-// <i> peripheral, set desired frequency, start the peripheral, and
-// <i> the proper transmission. See more in the Errata document or
-// <i> Anomaly 109 Addendum located at https://infocenter.nordicsemi.com/
-
-#ifndef TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
-#define TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
-#endif
-
 // </e>
 
 // <e> UART_ENABLED - nrf_drv_uart - UART/UARTE peripheral driver
@@ -232,6 +219,20 @@
 
 #ifndef UART0_CONFIG_USE_EASY_DMA
 #define UART0_CONFIG_USE_EASY_DMA 1
+#endif
+
+// </e>
+
+// <e> UART1_ENABLED - Enable UART1 instance
+//==========================================================
+#ifndef UART1_ENABLED
+#define UART1_ENABLED 0
+#endif
+// <q> UART1_CONFIG_USE_EASY_DMA  - Default setting for using EasyDMA
+ 
+
+#ifndef UART1_CONFIG_USE_EASY_DMA
+#define UART1_CONFIG_USE_EASY_DMA 1
 #endif
 
 // </e>
@@ -815,7 +816,7 @@
 // <e> COMP_CONFIG_LOG_ENABLED - Enables logging in the module.
 //==========================================================
 #ifndef COMP_CONFIG_LOG_ENABLED
-#define COMP_CONFIG_LOG_ENABLED
+#define COMP_CONFIG_LOG_ENABLED 0
 #endif
 // <o> COMP_CONFIG_LOG_LEVEL  - Default Severity level
  
@@ -826,7 +827,7 @@
 // <4=> Debug 
 
 #ifndef COMP_CONFIG_LOG_LEVEL
-#define COMP_CONFIG_LOG_LEVEL 2
+#define COMP_CONFIG_LOG_LEVEL 3
 #endif
 
 // <o> COMP_CONFIG_INFO_COLOR  - ANSI escape code prefix.
@@ -907,7 +908,7 @@
 // <4=> Debug 
 
 #ifndef GPIOTE_CONFIG_LOG_LEVEL
-#define GPIOTE_CONFIG_LOG_LEVEL 3
+#define GPIOTE_CONFIG_LOG_LEVEL 2
 #endif
 
 // <o> GPIOTE_CONFIG_INFO_COLOR  - ANSI escape code prefix.
