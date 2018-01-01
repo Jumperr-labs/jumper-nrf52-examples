@@ -1,0 +1,25 @@
+{
+	"description": "Nrf52-DK with accelerometer",
+	"components": [
+		{
+			"name": "nrf52832",
+			"id": 0,
+			"type": "MCU",
+			"class": "MCU"
+		},
+		{
+			"name": "bq24160",
+			"id": 8,
+			"type": "Peripheral",
+			"class": "BQ24160",
+			"config": {
+				"pins": {
+					"sda": 26,
+					"scl": 27,
+					"int": 25,
+					"stat": 24
+				}
+			}
+		}
+	]
+}
