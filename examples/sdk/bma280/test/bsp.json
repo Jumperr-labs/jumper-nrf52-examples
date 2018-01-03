@@ -1,0 +1,29 @@
+{
+	"description": "Nrf52-DK with accelerometer",
+	"components": [
+		{
+			"name": "nrf52832",
+			"id": 0,
+			"type": "MCU",
+			"class": "MCU"
+		},
+		{
+			"name": "BMA280Device",
+			"id": 10,
+			"type": "Peripheral",
+			"class": "BMA280",
+			"config": {
+				"pins": {
+					"pin1": 24,
+					"pin2": 25,
+					"sda": 26,
+					"scl": 27
+				},
+				"bmaTemperatureGenerator": 1,
+                "bmaXAccelerationGenerator": 2,
+				"bmaYAccelerationGenerator": 3,
+				"bmaZAccelerationGenerator": 4
+			}
+		}
+	]
+}

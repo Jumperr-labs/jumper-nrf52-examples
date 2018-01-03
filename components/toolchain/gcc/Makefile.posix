@@ -1,0 +1,3 @@
+GNU_INSTALL_ROOT := /opt/gcc-arm-none-eabi-6-2017-q2-update/bin/
+U_VERSION := 4.9.3
+GNU_PREFIX := arm-none-eabi
