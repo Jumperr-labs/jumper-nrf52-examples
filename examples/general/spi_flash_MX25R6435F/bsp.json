@@ -1,0 +1,25 @@
+{
+	"description": "Nrf52 with external flash",
+	"components": [
+		{
+			"name": "nrf52832",
+			"id": 0,
+			"type": "MCU",
+			"class": "MCU"
+		},
+		{
+			"name": "MX25R6435F",
+			"id": 8,
+			"type": "Peripheral",
+			"class": "MX25R6435F",
+			"config": {
+				"pins": {
+					"sclk": 3,
+					"mosi": 4,
+					"miso": 28,
+					"ss": 29
+				}
+			}
+		}
+	]
+}
