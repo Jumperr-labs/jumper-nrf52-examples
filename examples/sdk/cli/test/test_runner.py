@@ -19,11 +19,11 @@ class TestCLI(unittest.TestCase):
 
     def test_cli(self):
         self.vlab.uart.write(b'log\r\n')
-        self.vlab.uart.wait_until_uart_receives(b'status   :Logger status', 10000000)
+        self.vlab.uart.wait_until_uart_receives(b'status   :Logger status', 500000000)
         self.vlab.uart.write(b'python\r\n')
-        self.vlab.uart.wait_until_uart_receives(b'Nice joke ;)', 10000000)
+        self.vlab.uart.wait_until_uart_receives(b'Nice joke ;)', 500000000)
         self.vlab.uart.write(b'history\r\n')
-        self.vlab.uart.wait_until_uart_receives(b'[  2] history', 10000000)
+        self.vlab.uart.wait_until_uart_receives(b'[  2] history', 500000000)
 
 
 if __name__ == '__main__':
