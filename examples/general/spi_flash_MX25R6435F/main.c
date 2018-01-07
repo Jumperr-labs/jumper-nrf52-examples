@@ -176,7 +176,7 @@ int main(void)
     NRF_LOG_INFO("RES Command");
     uint8_t res;
     send_res_command(&res);
-    NRF_LOG_INFO("manufacturer id: 0x%x", res);
+    NRF_LOG_INFO("memory_density: 0x%x", res);
     NRF_LOG_INFO("-----------------------------------------------------------------");
     NRF_LOG_FLUSH();
 

@@ -1,0 +1,85 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: gcr.io/jemu-web-app/vlab-circleci
+        auth:
+          username: _json_key
+          password: $GOOGLE_AUTH
+
+    environment:
+      JUMPER_EXAMPLES: /home/circleci/jumper-nrf52-examples
+
+    working_directory: ~/
+
+    steps:
+      - checkout:
+          path: ~/jumper-nrf52-examples
+
+      - restore_cache:
+          key: vlab-integration-tests-repo2-
+      - run:
+          name: Pull From vlab-integration-tests
+          command: |
+            if [ ! -d vlab-integration-tests ]; then
+              git clone https://github.com/Jumperr-labs/vlab-integration-tests.git
+            fi
+            cd vlab-integration-tests
+            git pull
+      - save_cache:
+          key: vlab-integration-tests-repo2-{{ .BuildNum }}
+          paths:
+            - ~/vlab-integration-tests
+
+      - restore_cache:
+          keys:
+            - vlab-integration-tests-dependencies-{{ checksum "~/vlab-integration-tests/package.json" }}
+            - vlab-integration-tests-dependencies-
+      - run:
+          name: Install vlab-integration-tests Dependencies
+          working_directory: ~/vlab-integration-tests
+          command: |
+            npm install
+      - save_cache:
+          paths:
+            - ~/vlab-integration-tests/node_modules
+          key: vlab-integration-tests-dependencies-{{ checksum "~/vlab-integration-tests/package.json" }}
+
+      - restore_cache:
+          keys:
+            - vlab-integration-tests-venv-
+      - run:
+          name: Jumper SDK
+          working_directory: ~/vlab-integration-tests
+          command: |
+            if [ ! -d venv ]; then
+              virtualenv venv
+            fi
+            source venv/bin/activate
+            pip install --upgrade jumper
+      - save_cache:
+          key: vlab-integration-tests-venv-{{ .BuildNum }}
+          paths:
+            - ~/vlab-integration-tests/venv
+
+      - run:
+          name: vlab user
+          command: |
+            mkdir ~/.jumper
+            echo ${VLAB_USER_CONFIG_STAGING} > ~/.jumper/config.staging.json
+            echo ${VLAB_USER_CONFIG} > ~/.jumper/config.json
+
+      - run:
+          name: Integration Tests
+          working_directory: ~/vlab-integration-tests
+          command: |
+            source ~/vlab-integration-tests/venv/bin/activate
+            npm test
+
+workflows:
+  version: 2
+  nrf52-examples:
+    jobs:
+      - test:
+          context: org-global

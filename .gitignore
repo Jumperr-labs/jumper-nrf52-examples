@@ -257,6 +257,7 @@ uart
 **/_build/*.map
 **/_build/*.in
 **/_build/*.hex
+**/_build/**/
 ###########################
 # END OF PROJECT SPECIFIC #
 ###########################
