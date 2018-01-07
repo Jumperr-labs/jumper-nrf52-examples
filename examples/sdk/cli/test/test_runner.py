@@ -8,7 +8,7 @@ fw_bin = os.path.join(dir, '..', 'pca10040', 'blank', 'armgcc', '_build', 'nrf52
 
 class TestCLI(unittest.TestCase):
     def setUp(self):
-        self.vlab = Vlab(working_directory=dir, print_uart=False)
+        self.vlab = Vlab(working_directory=dir, print_uart=True)
         self.vlab.load(fw_bin)
         self.uart = self.vlab.uart
         self.vlab.start()
