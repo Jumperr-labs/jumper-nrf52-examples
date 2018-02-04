@@ -22,20 +22,22 @@ class TestAppButton(unittest.TestCase):
     def tearDown(self):
         self.vlab.stop()
 
+    def test_led_should_turn_on_on_button_push(self):
+        self.vlab.BUTTON1.on()
+        self.vlab.run_for_ms(60)
+        self.vlab.BUTTON1.off()
+        self.vlab.run_for_ms(500)
+        
+        # in this case we are going to poll for the pin level  
+        self.assertEqual(self.vlab.get_pin_level(17), 0)
+  
     def test_should_ignore_button_noise(self):
         self.vlab.BUTTON1.on()
         self.vlab.run_for_ms(1)
         self.vlab.BUTTON1.off()
         self.vlab.run_for_ms(500)
         self.assertFalse(self.is_led_on)
-
-    def test_led_should_turn_on_on_button_push(self):
-        self.vlab.BUTTON1.on()
-        self.vlab.run_for_ms(60)
-        self.vlab.BUTTON1.off()
-        self.vlab.run_for_ms(500)
-        self.assertTrue(self.is_led_on)
-
+          
 
 if __name__ == '__main__':
     unittest.main()
