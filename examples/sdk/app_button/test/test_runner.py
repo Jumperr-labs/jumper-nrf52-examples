@@ -8,7 +8,7 @@ fw_bin = os.path.join(dir, '..', 'pca10040', 'blank', 'armgcc', '_build', 'nrf52
 
 class TestAppButton(unittest.TestCase):
     def setUp(self):
-        print self.id().split('.')[-1]  # test name
+        print(self.id().split('.')[-1])  # test name
         self.vlab = Vlab(working_directory=dir)
         self.vlab.load(fw_bin)
         self.vlab.on_pin_level_event(self.pins_listener)
@@ -24,7 +24,7 @@ class TestAppButton(unittest.TestCase):
         self.vlab.stop()
 
     def print_device_time(self):
-        print 'Device time: ' + str(self.vlab.get_device_time_ms()) + ' ms'
+        print('Device time: ' + str(self.vlab.get_device_time_ms()) + ' ms')
 
     def test_led_should_turn_on_on_button_push(self):
         self.print_device_time()
