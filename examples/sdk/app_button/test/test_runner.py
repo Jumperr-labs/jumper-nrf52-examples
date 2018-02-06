@@ -28,9 +28,11 @@ class TestAppButton(unittest.TestCase):
 
     def test_led_should_turn_on_on_button_push(self):
         self.print_device_time()
+        print('Button on')
         self.vlab.BUTTON1.on()
         self.vlab.run_for_ms(60)
         self.print_device_time()
+        print('Button off')
         self.vlab.BUTTON1.off()
         self.vlab.run_for_ms(500)
         
@@ -39,9 +41,11 @@ class TestAppButton(unittest.TestCase):
   
     def test_should_ignore_button_noise(self):
         self.print_device_time()
+        print('Button on')
         self.vlab.BUTTON1.on()
         self.vlab.run_for_ms(1)
         self.print_device_time()
+        print('Button off')
         self.vlab.BUTTON1.off()
         self.vlab.run_for_ms(500)
         self.assertFalse(self.is_led_on)
