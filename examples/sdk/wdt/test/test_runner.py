@@ -10,10 +10,10 @@ class TestWatchDogTimer(unittest.TestCase):
     def setUp(self):
         print(self.id().split('.')[-1])  # test name
         self.vlab = Vlab(working_directory=dir, print_uart=True)
-        self.vlab.load(fw_bin)
-        print('Virtual device is running')
-        self.vlab.run_for_ms(1)
         self.vlab.on_interrupt(self.on_interrupt)
+        self.vlab.load(fw_bin)
+        self.vlab.run_for_ms(500)
+        print('Virtual device is running')
 
     def tearDown(self):
         self.vlab.stop()
